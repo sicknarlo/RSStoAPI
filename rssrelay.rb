@@ -62,18 +62,7 @@ class RSSRelay < Sinatra::Application
       # Retrieve and parse the feed from the URL provided
       open(params[:url]) do |rss|
         feed = RSS::Parser.parse(rss, false)
-        items = feed.items.map{|item| 
-          {
-          :title => item.title, 
-          :link => item.link,
-          :published => 
-            if feed.class.to_s == "RSS::RDF"
-              item.dc_date
-            else
-              item.pubDate
-            end
-          }
-        }
+        items = feed.items
       end
 
       # Get the number of items to cache, from a config variable or the default of 25
